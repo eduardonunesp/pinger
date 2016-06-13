@@ -1,0 +1,2 @@
+defmodule Pinger do
+end
