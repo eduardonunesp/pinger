@@ -10,17 +10,17 @@ defmodule Pinger.DispatcherTest do
 
   describe "the dispatcher" do
     test "should dispatch and return 200", %{destiny: destiny} do
-      assert Dispatcher.dispatch(destiny) == {:ok, 200}
+      assert Dispatcher.dispatch(destiny) == {:ok, 200}, "Return must be {:ok, 200}"
     end
 
     test "should not dispatch, because the invalid address", %{destiny: destiny} do
       destiny = Destiny.update_address(destiny, "http_invalid_address")
-      assert Dispatcher.dispatch(destiny) == {:error, "Invalid http address"}
+      assert Dispatcher.dispatch(destiny) == {:error, "Invalid http address"}, "Return must be {:error, \"Invalid http address\"}"
     end
 
     test "should dispatch, but return nxdomain", %{destiny: destiny} do
       destiny = Destiny.update_address(destiny, "http://jucabaladasilvasaurojunior.com")
-      assert Dispatcher.dispatch(destiny) == {:error, "nxdomain"}
+      assert Dispatcher.dispatch(destiny) == {:error, "nxdomain"}, "Return must be {:error, \"nxdomain\"}"
     end
   end
 end

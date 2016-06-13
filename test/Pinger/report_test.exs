@@ -12,12 +12,12 @@ defmodule Pinger.ReportTest do
   describe "the report" do
     test "should register 200", %{report: report} do
       report = Report.update_result(report, 200)
-      assert report.result == 200
+      assert report.result == 200, "Result must be 200"
     end
 
     test "should register 404", %{report: report} do
       report = Report.update_result(report, 404)
-      assert report.result == 404
+      assert report.result == 404, "Result must be 404"
     end
   end
 end
