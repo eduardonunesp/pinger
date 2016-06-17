@@ -17,7 +17,7 @@ defmodule Pinger.Mixfile do
   def application do
     [applications: [
       :logger, :httpotion
-    ]]
+    ], mod: {Pinger, []}]
   end
 
   defp deps do

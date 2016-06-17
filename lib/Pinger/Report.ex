@@ -1,17 +1,17 @@
 defmodule Pinger.Report do
-  alias Pinger.Destiny
+  alias Pinger.Target
 
-  defstruct destiny: nil,
-            result: 404
+  defstruct target: nil,
+            status_code: 404
 
-  def new(%Destiny{} = dest, result) when is_integer(result) do
+  def new(%Target{} = target, status_code) when is_integer(status_code) do
     %__MODULE__{
-      destiny: dest,
-      result: result
+      target: target,
+      status_code: status_code
     }
   end
 
-  def update_result(%__MODULE__{} = report, result) when is_integer(result) do
-    %{ report | result: result}
+  def update_status_code(%__MODULE__{} = report, status_code) when is_integer(status_code) do
+    %{ report | status_code: status_code}
   end
 end

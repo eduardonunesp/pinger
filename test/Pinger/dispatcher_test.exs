@@ -1,26 +1,37 @@
 defmodule Pinger.DispatcherTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   alias Pinger.Dispatcher
-  alias Pinger.Destiny
+  alias Pinger.Target
+  alias Pinger.Server
 
   setup do
-    destiny = Destiny.new("Google", "http://www.google.com")
-    {:ok, destiny: destiny}
+    target = Target.new("Google", "http://www.google.com")
+
+    on_exit fn ->
+      Enum.each Server.schedulers, fn(s) ->
+        Server.delete_scheduler(s)
+      end
+    end
+
+    {:ok, target: target}
   end
 
   describe "the dispatcher" do
-    test "should dispatch and return 200", %{destiny: destiny} do
-      assert Dispatcher.dispatch(destiny) == {:ok, 200}, "Return must be {:ok, 200}"
+    @tag :dispatcher
+    test "should dispatch and return 200", %{target: target} do
+      assert Dispatcher.dispatch(target) == {:ok, 200}, "Return must be {:ok, 200}"
     end
 
-    test "should not dispatch, because the invalid address", %{destiny: destiny} do
-      destiny = Destiny.update_address(destiny, "http_invalid_address")
-      assert Dispatcher.dispatch(destiny) == {:error, "Invalid http address"}, "Return must be {:error, \"Invalid http address\"}"
+    @tag :dispatcher
+    test "should not dispatch, because the invalid address", %{target: target} do
+      target = Target.update_address(target, "http_invalid_address")
+      assert Dispatcher.dispatch(target) == {:error, "Invalid http address"}, "Return must be {:error, \"Invalid http address\"}"
     end
 
-    test "should dispatch, but return nxdomain", %{destiny: destiny} do
-      destiny = Destiny.update_address(destiny, "http://jucabaladasilvasaurojunior.com")
-      assert Dispatcher.dispatch(destiny) == {:error, "nxdomain"}, "Return must be {:error, \"nxdomain\"}"
+    @tag :dispatcher
+    test "should dispatch, but return nxdomain", %{target: target} do
+      target = Target.update_address(target, "http://jucabaladasilvasaurojunior.com")
+      assert Dispatcher.dispatch(target) == {:error, "nxdomain"}, "Return must be {:error, \"nxdomain\"}"
     end
   end
 end

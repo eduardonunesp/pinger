@@ -1,13 +1,13 @@
 defmodule Pinger.Dispatcher do
-  alias Pinger.Destiny
+  alias Pinger.Target
 
-  def dispatch(%Destiny{} = dest) do  
+  def dispatch(%Target{} = dest) do  
     with {:ok, _          } <- check_address(dest),
          {:ok, status_code} <- do_dispatch(dest.address),
     do:  {:ok, status_code}
   end
 
-  def check_address(%Destiny{} = dest) do
+  def check_address(%Target{} = dest) do
     r = Regex.match?(~r/https?:\/\/.*/, dest.address)
     cond do
       r == false -> {:error, "Invalid http address"}
