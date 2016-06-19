@@ -17,7 +17,7 @@ defmodule Pinger.Scheduler do
   Dispatch the request and wait for the report
   """
   def dispatch(server) do
-    GenServer.call(server, {:dispatch})
+    GenServer.call(server, {:dispatch}, 60_000)
   end
 
   @doc """
@@ -67,10 +67,6 @@ defmodule Pinger.Scheduler do
     {:reply, state, state}
   end
 
-  def handle_call({:get}, _from, state) do
-    state
-  end
-
   def handle_cast({:set, nstate}, state) do
     {:noreply, nstate, state}
   end
@@ -84,6 +80,7 @@ defmodule Pinger.Scheduler do
     case Dispatcher.dispatch(target) do
       {:ok, status_code} -> Report.new(target, status_code, "Remote access reached")
       {:error, "nxdomain"} -> Report.new(target, 0, "Can't reach the remote access")
+      {:error, "req_timedout"} -> Report.new(target, 0, "Server not respond in 60 secs")
       {:error, message} -> Report.new(target, 0, message)
     end
   end

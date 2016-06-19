@@ -17,21 +17,19 @@ defmodule Pinger.SchedulerTest do
 
     {:ok, scheduler: scheduler}
   end
- 
-  describe "the scheduler" do
-    @describtag :scheduler
-    
-    test "should dispatch", %{scheduler: scheduler} do
-      result = Scheduler.dispatch(scheduler)
-      assert result.report.status_code == 200
-    end
-
-    test "should get the current state", %{scheduler: scheduler} do
-      Scheduler.dispatch(scheduler)
-      state = Scheduler.get(scheduler)
-      assert state
-    end
-
-    test "should not monitoring same address twice"
+   
+  @tag :scheduler
+  test "should dispatch", %{scheduler: scheduler} do
+    result = Scheduler.dispatch(scheduler)
+    assert result.report.status_code == 200
   end
+
+  @tag :scheduler
+  test "should get the current state", %{scheduler: scheduler} do
+    Scheduler.dispatch(scheduler)
+    state = Scheduler.get(scheduler)
+    assert state
+  end
+
+  # test "should not monitoring same address twice"
 end

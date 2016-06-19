@@ -13,21 +13,20 @@ defmodule Pinger.CacheTest do
     {:ok, target: target, state: state}
   end
 
-  describe "the cache" do
-    @describetag :cache
+  @tag :cache
+  test "should save adds a list to the ETS table" do
+    info = :ets.info(Cache)
+    assert info[:size] == 1
+  end
 
-    test "should save adds a list to the ETS table" do
-      info = :ets.info(Cache)
-      assert info[:size] == 1
-    end
+  @tag :cache
+  test "should find gets a list out of the ETS table", %{target: target, state: state} do
+    assert Cache.find(target.name) == state
+  end
 
-    test "should find gets a list out of the ETS table", %{target: target, state: state} do
-      assert Cache.find(target.name) == state
-    end
-
-    test "should clear eliminates all objects from the ETS table", %{target: target} do
-      Cache.clear
-      refute Cache.find(target.name)
-    end
+  @tag :cache
+  test "should clear eliminates all objects from the ETS table", %{target: target} do
+    Cache.clear
+    refute Cache.find(target.name)
   end
 end

@@ -38,9 +38,11 @@ defmodule Pinger.Dispatcher do
     end
   end
 
+  @httpconfig [follow_redirects: true, timeout: 60_000]
+
   # Do the dispatch using httpotion module
   defp do_dispatch(address) when is_binary(address) do
-    r = HTTPotion.get(address, [follow_redirects: true])
+    r = HTTPotion.get(address, @httpconfig)
     case r do
       %HTTPotion.Response{}      -> {:ok, r.status_code}
       %HTTPotion.ErrorResponse{} -> {:error, r.message}

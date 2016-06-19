@@ -9,18 +9,16 @@ defmodule Pinger.ReportTest do
     report = Report.new(target, 200);
     {:ok, target: target, report: report}
   end
+    
+  @tag :report
+  test "should register 200", %{report: report} do
+    report = Report.update_status_code(report, 200)
+    assert report.status_code == 200, "Result must be 200"
+  end
 
-  describe "the report" do
-    @describetag :report
-
-    test "should register 200", %{report: report} do
-      report = Report.update_status_code(report, 200)
-      assert report.status_code == 200, "Result must be 200"
-    end
-
-    test "should register 404", %{report: report} do
-      report = Report.update_status_code(report, 404)
-      assert report.status_code == 404, "Result must be 404"
-    end
+  @tag :report
+  test "should register 404", %{report: report} do
+    report = Report.update_status_code(report, 404)
+    assert report.status_code == 404, "Result must be 404"
   end
 end

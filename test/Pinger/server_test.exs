@@ -18,22 +18,19 @@ defmodule Pinger.ServerTest do
     {:ok, target: target}
   end
 
-  describe "the server" do
-    @describetag :server
-
-    test "should adds new supervised scheduler", %{target: target} do
-      Server.add_scheduler(target)
-      count = Supervisor.count_children(Server)
-      assert count.active == 1
-    end
-
-    test "should dispatch and return", %{target: target} do
-      {:ok, scheduler} = Server.add_scheduler(target)
-      result = Scheduler.dispatch scheduler
-      assert result
-    end
-
-    test "should find scheduler by name"
-    test "should find scheduler by address"
+  @tag :server
+  test "should adds new supervised scheduler", %{target: target} do
+    Server.add_scheduler(target)
+    count = Supervisor.count_children(Server)
+    assert count.active == 1
   end
+
+  test "should dispatch and return", %{target: target} do
+    {:ok, scheduler} = Server.add_scheduler(target)
+    result = Scheduler.dispatch scheduler
+    assert result
+  end
+
+  # test "should find scheduler by name"
+  # test "should find scheduler by address"
 end
