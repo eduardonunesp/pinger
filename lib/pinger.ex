@@ -1,6 +1,22 @@
 defmodule Pinger do
   use Application
 
+  alias Pinger.Target
+  alias Pinger.Server
+  alias Pinger.Cache
+
+  def watch_target(%Target{} = target) do
+    Server.add_scheduler(target)
+  end
+
+  def unwatch_target(scheduler) do
+    Server.delete_scheduler(scheduler)
+  end
+
+  def target_state(%Target{} = target) do
+    Cache.find(target.name)
+  end
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do

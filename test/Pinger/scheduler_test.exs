@@ -31,5 +31,7 @@ defmodule Pinger.SchedulerTest do
       state = Scheduler.get(scheduler)
       assert state
     end
+
+    test "should not monitoring same address twice"
   end
 end

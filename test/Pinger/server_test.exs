@@ -32,5 +32,8 @@ defmodule Pinger.ServerTest do
       result = Scheduler.dispatch scheduler
       assert result
     end
+
+    test "should find scheduler by name"
+    test "should find scheduler by address"
   end
 end
