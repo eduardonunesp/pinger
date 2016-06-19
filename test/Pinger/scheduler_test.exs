@@ -20,9 +20,16 @@ defmodule Pinger.SchedulerTest do
  
   describe "the scheduler" do
     @describtag :scheduler
-    test "schedule and dispatch", %{scheduler: scheduler} do
+    
+    test "should dispatch", %{scheduler: scheduler} do
       result = Scheduler.dispatch(scheduler)
       assert result.report.status_code == 200
+    end
+
+    test "should get the current state", %{scheduler: scheduler} do
+      Scheduler.dispatch(scheduler)
+      state = Scheduler.get(scheduler)
+      assert state
     end
   end
 end

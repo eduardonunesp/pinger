@@ -20,6 +20,16 @@ defmodule Pinger.Scheduler do
     GenServer.call(server, {:dispatch})
   end
 
+  @doc """
+  Get the current state
+  """
+  def get(server) do
+    GenServer.call(server, {:get})
+  end
+
+  @doc """
+  Start a watch loop to keep requesting the target at each target.interval
+  """
   def watch_loop(server) do
     GenServer.cast(server, {:watch_loop})
   end
@@ -40,8 +50,7 @@ defmodule Pinger.Scheduler do
     if state.target.active do
       state = %{state | report: do_dispatch(state.target)}
       Cache.save(state)
-      :timer.sleep state.target.interval
-      send(self(), :loop); 
+      Process.send_after(self(), :loop, state.target.interval)
     end
 
     {:noreply, state}
@@ -58,6 +67,10 @@ defmodule Pinger.Scheduler do
     {:reply, state, state}
   end
 
+  def handle_call({:get}, _from, state) do
+    state
+  end
+
   def handle_cast({:set, nstate}, state) do
     {:noreply, nstate, state}
   end
@@ -69,8 +82,9 @@ defmodule Pinger.Scheduler do
 
   defp do_dispatch(target) do
     case Dispatcher.dispatch(target) do
-      {:ok, status_code} -> Report.new(target, status_code)
-      {:error, _} -> Report.new(target, 500)
+      {:ok, status_code} -> Report.new(target, status_code, "Remote access reached")
+      {:error, "nxdomain"} -> Report.new(target, 0, "Can't reach the remote access")
+      {:error, message} -> Report.new(target, 0, message)
     end
   end
 end

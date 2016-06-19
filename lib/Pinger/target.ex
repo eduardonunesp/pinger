@@ -1,8 +1,17 @@
 defmodule Pinger.Target do
+  require Logger
+
   defstruct name: nil,
             address: nil,
             interval: 10000,
             active: false
+
+
+  defimpl String.Chars, for: __MODULE__ do
+    def to_string(target) do
+      "%#{Pinger.Utils.mod_name(__MODULE__)}{name: #{target.name}, address: #{target.address}, interval: #{target.interval}, active: #{target.active}}"
+    end
+  end
 
   @doc """
   Create a new Target struct with name, address, interval (default 10000) and active (default true)
@@ -14,13 +23,16 @@ defmodule Pinger.Target do
       iex> Pinger.Target.new("Google", "https://www.google.com", 5000, false)
       %Pinger.Target{active: false, address: "https://www.google.com", interval: 5000, name: "Google"}
   """
-  def new(name, address, interval \\ 10000, active \\ true) when is_binary(name) and is_binary(address) do
-    %__MODULE__{
+  def new(name, address, interval \\ 10000, active \\ true) when is_binary(name) and is_binary(address) do  
+    target = %__MODULE__{
       name: name, 
       address: address,
       interval: interval, 
       active: active
     }
+
+    Logger.debug "New target created #{target}"
+    target
   end
 
   @doc """
@@ -71,6 +83,15 @@ defmodule Pinger.Target do
     %{ dest | address: address}
   end
 
+  @doc """
+  A simple request to "https://www.google.com"
+
+  ## Example
+      iex> Pinger.Target.get_google
+      ...> |> Pinger.Target.update_address("https://www.google.com.br")
+      %Pinger.Target{active: true, address: "https://www.google.com.br", name: "Google"}
+
+  """
   def get_google do
     new("Google", "https://www.google.com")
   end

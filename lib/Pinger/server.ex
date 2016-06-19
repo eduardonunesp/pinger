@@ -2,14 +2,23 @@ defmodule Pinger.Server do
   use Supervisor
   alias Pinger.Target
 
+  @doc """
+  Adds an schedulr to supervisor
+  """
   def add_scheduler(%Target{} = target) do
     Supervisor.start_child(__MODULE__, [target])
   end
 
+  @doc """
+  Deletes an scheduler from supervisor
+  """
   def delete_scheduler(scheduler) do
     Supervisor.terminate_child(__MODULE__, scheduler)
   end
 
+  @doc """
+  Returns all schedulers from supervisor
+  """
   def schedulers do
     __MODULE__
     |> Supervisor.which_children
