@@ -51,4 +51,8 @@ defmodule Pinger.DispatcherTest do
     target = Target.new("Httpbin", "http://httpbin.org/status/500")
     assert Dispatcher.dispatch(target) == {:ok, 500}
   end
+
+  # test "should dispatch an post request"
+  # test "should dispatch an put request "
+  # test "should dippatch an delete request"
 end
