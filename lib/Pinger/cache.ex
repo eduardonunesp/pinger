@@ -1,4 +1,8 @@
 defmodule Pinger.Cache do
+  @moduledoc """
+  Simple cache used to monitor the latest state of the Target
+  """
+
   use GenServer
   import String, only: [to_atom: 1]
 

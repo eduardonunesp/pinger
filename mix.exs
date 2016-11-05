@@ -24,7 +24,8 @@ defmodule Pinger.Mixfile do
   defp deps do
     [
       {:httpotion, "~> 3.0.0"},
-      {:uuid, "~> 1.1"}
+      {:uuid, "~> 1.1"},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
 

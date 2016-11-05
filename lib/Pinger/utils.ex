@@ -1,4 +1,7 @@
 defmodule Pinger.Utils do
+  @moduledoc """
+  Simple helpers functions
+  """
 
   @doc """
   Remove Elixir.String.Char from module name

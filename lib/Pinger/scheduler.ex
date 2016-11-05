@@ -1,4 +1,8 @@
 defmodule Pinger.Scheduler do
+  @moduledoc """
+  Responsible for firing the dispatcher to check target uris
+  """
+
   use GenServer
   require Logger
 

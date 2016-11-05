@@ -1,4 +1,8 @@
 defmodule Pinger.Target do
+  @moduledoc """
+  Target specification for the URL to monitor, it can handle address, interval and if is active
+  """
+
   require Logger
 
   defstruct name: nil,
