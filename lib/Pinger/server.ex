@@ -1,4 +1,8 @@
 defmodule Pinger.Server do
+  @moduledoc """
+  Creates a supervisor server to manage schedulers
+  """
+
   use Supervisor
   alias Pinger.Target
 
