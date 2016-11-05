@@ -8,6 +8,7 @@ defmodule Pinger.Mixfile do
       elixir: "~> 1.3.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
+      source: source(),
       description: description(),
       package: package(),
       deps: deps()
@@ -25,6 +26,10 @@ defmodule Pinger.Mixfile do
       {:httpotion, "~> 3.0.0"},
       {:uuid, "~> 1.1"}
     ]
+  end
+
+  defp source do
+    "https://github.com/eduardonunesp/pinger"
   end
 
   defp description do
