@@ -1,5 +1,6 @@
 defmodule Pinger.Scheduler do
   use GenServer
+  require Logger
 
   alias Pinger.Cache
   alias Pinger.Target
@@ -61,7 +62,9 @@ defmodule Pinger.Scheduler do
   end
 
   def handle_call({:dispatch}, _from, state) do
+    Logger.debug "Trying to ping #{state.target} ..."
     if state.target.active do
+      Logger.debug "Pinging"
       state = %{state | report: do_dispatch(state.target)}
     end
     {:reply, state, state}

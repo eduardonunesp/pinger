@@ -2,6 +2,7 @@ defmodule Pinger.SchedulerTest do
   use ExUnit.Case
   alias Pinger.Scheduler
   alias Pinger.Target
+  alias Pinger.Cache
   alias Pinger.Server
   doctest Pinger.Scheduler
 
@@ -29,6 +30,20 @@ defmodule Pinger.SchedulerTest do
     Scheduler.dispatch(scheduler)
     state = Scheduler.get(scheduler)
     assert state
+  end
+
+  @tag :scheduler
+  test "should not dispatch" do
+    Enum.each Server.schedulers, fn(s) ->
+      Server.delete_scheduler(s)
+    end
+
+    Cache.clear
+    
+    target = Target.new("Google", "https://www.google.com", 4000, false)
+    {:ok, scheduler} = Server.add_scheduler(target)
+    result = Scheduler.dispatch(scheduler)
+    refute result.report
   end
 
   # test "should not monitoring same address twice"
